@@ -1,8 +1,8 @@
 """
 Author: Lambdald lambdald@163.com
 Date: 2025-05-28 22:25:36
-LastEditors: Lambdald lambdald@163.com
-LastEditTime: 2025-05-28 22:41:54
+LastEditors: lidong lambdald@outlook.com
+LastEditTime: 2025-05-29 11:36:38
 Description: 
 """
 from datetime import datetime, timedelta
@@ -11,19 +11,31 @@ import pandas as pd
 import streamlit as st
 from mitosheet.streamlit.v1 import spreadsheet
 from mitosheet.streamlit.v1.spreadsheet import _get_mito_backend
-from shangan.dataparser.xls_parser import XLSParser
-
-# 实例化XLSParser类
-parser = XLSParser()
-
-# 解析xls文件
-file_path = r'data\ShengKao\ShanXi\职位表.xls'
-
+from pathlib import Path
 st.set_page_config(layout="wide")
+
+
+data_dir = Path(r"data")
+assert data_dir.exists(), f"Data directory {data_dir} does not exist."
+
+shengkao_dir = data_dir / "ShengKao"
+assert shengkao_dir.exists(), f"ShengKao directory {shengkao_dir} does not exist."
+
+provinces = sorted(shengkao_dir.iterdir())
+selected_province = st.selectbox("Select a province", provinces)
+
+if selected_province:
+    selected_province_dir = shengkao_dir / selected_province.name
+    assert selected_province_dir.exists(), f"Selected province directory {selected_province_dir} does not exist."
+
+file_path = selected_province_dir / "data.csv"
+assert file_path.exists(), f"File {file_path} does not exist."
+
+
 
 @st.cache_data
 def get_tesla_data():
-    df = parser.parse_xls(file_path)
+    df = pd.read_csv(file_path)
     return df
 
 tesla_data = get_tesla_data()
