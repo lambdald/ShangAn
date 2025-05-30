@@ -28,14 +28,14 @@ if selected_province:
     selected_province_dir = shengkao_dir / selected_province.name
     assert selected_province_dir.exists(), f"Selected province directory {selected_province_dir} does not exist."
 
-file_path = selected_province_dir / "data.csv"
+file_path = selected_province_dir / "data.parquet"
 assert file_path.exists(), f"File {file_path} does not exist."
 
 
 
 @st.cache_data
 def get_tesla_data():
-    df = pd.read_csv(file_path)
+    df = pd.read_parquet(file_path)
     return df
 
 tesla_data = get_tesla_data()

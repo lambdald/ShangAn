@@ -10,6 +10,7 @@ import xlrd
 from pathlib import Path
 import pandas as pd
 from typing import List, Dict
+import numpy as np
 
 
 def read_xls(file_path: str | Path) -> pd.DataFrame:
@@ -69,7 +70,7 @@ class ShengKaoShanXiParser(XLSParser):
         """
         file_path = Path(file_path)
         df = read_xls(file_path)
-        df.insert(0, "JobID", range(1, len(df) + 1))
+        df.insert(0, "JobID", list(range(1, len(df) + 1)))
         return df
 
     def parse_baomingqingkuang(self, file_path: List[Path]) -> List[pd.DataFrame]:

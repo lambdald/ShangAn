@@ -24,9 +24,9 @@ def main():
             zhiweibiao_df = parser.parse_zhiweibiao(zhiweibiao)
             baomingqingkuang_df = parser.parse_baomingqingkuang(baomingqingkuang)
             final_data = parser.merge(zhiweibiao_df, baomingqingkuang_df)
+
             final_data.to_parquet(province_dir / "data.parquet", index=False)
             print(f"Processing {zhiweibiao} and {baomingqingkuang}")
-
 
 if __name__ == "__main__":
     main()
